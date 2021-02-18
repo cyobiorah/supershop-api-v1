@@ -1,49 +1,24 @@
-// const mongoose = require("../../common/services/mongoose.service").mongoose;
-// const Schema = mongoose.Schema;
-// const userSchema = require("../../users/model/users.model");
-
 const User = require("../../common/services/schema.service").User;
-// const userSchema = User.userSchema;
-
-// const userSchema = new Schema({
-//   firstname: { type: String, required: true },
-//   email: { type: String, required: true },
-//   lastname: { type: String, required: true },
-//   phone: { type: String, required: true },
-//   password: { type: String, required: true },
-//   permissionLevel: { type: Number },
-//   createdAt: { type: Date, default: Date.now },
-//   shops: { type: mongoose.Schema.Types.ObjectId, ref: "Shops" },
-// });
-
-// userSchema.virtual("id").get(function () {
-//   return this._id.toHexString();
-// });
-
-// userSchema.set("toJSON", {
-//   virtual: true,
-// });
-
-// userSchema.findById = function (cb) {
-//   return this.model("Users").find({ id: this.id }, cb);
-// };
-
-// const User = mongoose.model("Users", userSchema);
 
 exports.findByEmail = (email) => {
   return User.find({ email: email });
 };
 
 exports.findById = (id) => {
-  return User.findOne({ _id: id }).then((result) => {
-    if (!result) return null;
-    else {
-      // console.log(result);
-      result = result.toJSON();
-      delete result.__v;
-      return result;
-    }
-  });
+  return User.findById(id)
+    .populate("shops", "-__v")
+    .exec()
+    .then((result) => {
+      if (!result) return { success: false, message: "No User Found!" };
+      else {
+        result = result.toJSON();
+        delete result.__v;
+        return result;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.createUser = (userData) => {
@@ -54,6 +29,7 @@ exports.createUser = (userData) => {
 exports.list = (perPage, page) => {
   return new Promise((resolve, reject) => {
     User.find()
+      .populate("shops", "-__v")
       .limit(perPage)
       .skip(perPage * page)
       .exec(function (err, users) {
@@ -78,7 +54,7 @@ exports.patchUser = (id, userData) => {
 
 exports.removeById = (userId) => {
   return new Promise((resolve, reject) => {
-    User.remove({ _id: userId }, (err) => {
+    User.deleteOne({ _id: userId }, (err) => {
       if (err) reject(err);
       else resolve(err);
     });

@@ -36,13 +36,15 @@ exports.list = (req, res) => {
 
 exports.getById = (req, res) => {
   ShopModel.findById(req.params.shopId).then((result) => {
-    res.status(200).send(result);
+    if (result === null)
+      res.status(400).send({ success: false, message: "No Shop Found!" });
+    else res.status(200).send(result);
   });
 };
 
 exports.updateShop = (req, res) => {
   ShopModel.updateShop(req.params.shopId, req.body).then((result) => {
-    res.status(204).send({
+    res.status(201).send({
       success: true,
       data: result,
       message: "Shop Updated Successfully",
@@ -50,8 +52,23 @@ exports.updateShop = (req, res) => {
   });
 };
 
+exports.updateShopAdmin = (req, res) => {
+  ShopModel.updateShopAdmin(req.params.shopId, req.body.userId).then(
+    (result) => {
+      console.log(result);
+      res.status(201).send({
+        success: true,
+        data: result,
+        message: "Shop Admin Added",
+      });
+    }
+  );
+};
+
 exports.removeShop = (req, res) => {
-  ShopModel.removeShop(req.params.shopId).then((result) => {
-    res.status(204).send();
-  });
+  ShopModel.deleteShop(req.params.shopId, req.body.shopsuperadmin).then(
+    (result) => {
+      res.status(204).send();
+    }
+  );
 };

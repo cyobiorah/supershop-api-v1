@@ -20,7 +20,7 @@ exports.routesConfig = function (app) {
   ]);
   app.get("/users", [
     ValidationMiddleware.validJWTNeeded,
-    PermissionMiddleware.minimumPermissionLevelRequired(ADMIN_USER),
+    PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
     UsersController.list,
   ]);
   app.get("/users/:userId", [
@@ -35,7 +35,7 @@ exports.routesConfig = function (app) {
   ]);
   app.delete("/users/:userId", [
     ValidationMiddleware.validJWTNeeded,
-    PermissionMiddleware.minimumPermissionLevelRequired(ADMIN_USER),
+    PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
     UsersController.removeById,
   ]);
 };

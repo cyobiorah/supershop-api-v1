@@ -30,7 +30,29 @@ exports.hasShopFields = (req, res, next) => {
   if (!req.body.name) errors.push("Shop name is required");
   if (!req.body.address) errors.push("Address is required");
   if (!req.body.phone) errors.push("Phone is required");
-  if (!req.body.shopadmin) errors.push("Shop admin ID is required");
+  if (!req.body.shopsuperadmin) errors.push("Shop admin ID is required");
+  if (errors.length) {
+    return res.status(400).send({
+      success: false,
+      message: errors.join(", "),
+    });
+  } else return next();
+};
+
+exports.hasDeleteShopFields = (req, res, next) => {
+  let errors = [];
+  if (!req.body.shopsuperadmin) errors.push("Shop admin ID is required");
+  if (errors.length) {
+    return res.status(400).send({
+      success: false,
+      message: errors.join(", "),
+    });
+  } else return next();
+};
+
+exports.hasShopAdminFields = (req, res, next) => {
+  let errors = [];
+  if (!req.body.userId) errors.push("User ID is required");
   if (errors.length) {
     return res.status(400).send({
       success: false,

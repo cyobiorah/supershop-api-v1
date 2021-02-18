@@ -18,13 +18,25 @@ userSchema.virtual("id").get(function () {
 userSchema.set("toJSON", {
   virtual: true,
 });
+userSchema.method("toJSON", function () {
+  var user = this.toObject();
+  delete user.password;
+  return user;
+});
 
 const shopSchema = new Schema({
   name: { type: String, required: true },
   address: { type: String, required: true },
   phone: { type: String, required: true },
   logoUrl: { type: String },
-  shopadmin: {
+  shopadmins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+      sparse: true,
+    },
+  ],
+  shopsuperadmin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required: true,
