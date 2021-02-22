@@ -22,16 +22,26 @@ exports.routesConfig = function (app) {
     PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
     ShopsController.updateShop,
   ]);
+  app.delete("/shops/:shopId", [
+    ValidationMiddleware.validJWTNeeded,
+    PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
+    InputsMiddleware.hasDeleteShopFields,
+    ShopsController.removeShop,
+  ]);
   app.put("/shops/shopadmin/:shopId", [
     ValidationMiddleware.validJWTNeeded,
     PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
     InputsMiddleware.hasShopAdminFields,
     ShopsController.updateShopAdmin,
   ]);
-  app.delete("/shops/:shopId", [
+  app.get("/shops/shopadmin/:shopId", [
     ValidationMiddleware.validJWTNeeded,
     PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
-    InputsMiddleware.hasDeleteShopFields,
-    ShopsController.removeShop,
+    ShopsController.getShopAdmins,
+  ]);
+  app.delete("/shops/shopadmin/:shopId", [
+    ValidationMiddleware.validJWTNeeded,
+    PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
+    ShopsController.deleteShopAdmin,
   ]);
 };

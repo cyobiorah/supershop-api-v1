@@ -52,6 +52,16 @@ exports.updateShop = (req, res) => {
   });
 };
 
+exports.getShopAdmins = (req, res) => {
+  ShopModel.getShopAdmins(req.params.shopId).then((result) => {
+    res.status(201).send({
+      success: true,
+      data: result[0],
+      message: "Shop Admin fetched Successfully",
+    });
+  });
+};
+
 exports.updateShopAdmin = (req, res) => {
   ShopModel.updateShopAdmin(req.params.shopId, req.body.userId).then(
     (result) => {
@@ -61,6 +71,15 @@ exports.updateShopAdmin = (req, res) => {
         data: result,
         message: "Shop Admin Added",
       });
+    }
+  );
+};
+
+exports.deleteShopAdmin = (req, res) => {
+  ShopModel.deleteShopAdmin(req.params.shopId, req.body.userId).then(
+    (result) => {
+      console.log(result);
+      res.status(204).send();
     }
   );
 };

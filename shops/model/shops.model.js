@@ -71,9 +71,8 @@ exports.updateShopAdmin = (shopId, userId) => {
   return new Promise((resolve, reject) => {
     Shop.findById(shopId, function (err, shop) {
       if (err) reject(err);
-      console.log(shop);
       if (shop.shopadmins.length > 1)
-        return { success: false, error: "Maximum number of shops allowd" };
+        return { success: false, error: "Maximum number of shops allowed" };
       else {
         shop.shopadmins.push(userId);
         shop.save(function (err, updatedShop) {
@@ -85,9 +84,33 @@ exports.updateShopAdmin = (shopId, userId) => {
   });
 };
 
+exports.getShopAdmins = (shopId) => {
+  return new Promise((resolve, reject) => {
+    Shop.find({ _id: shopId })
+      .select({ shopadmins: 1 })
+      .populate("shopadmins")
+      .exec(function (err, shopadmins) {
+        if (err) reject(err);
+        resolve(shopadmins);
+      });
+  });
+};
+
+exports.deleteShopAdmin = (shopId, shopadminId) => {
+  return new Promise((resolve, reject) => {
+    Shop.findByIdAndUpdate(
+      { _id: shopId },
+      { $pull: { shopadmins: shopadminId } },
+      { useFindAndModify: false },
+      function (err, update) {
+        if (err) reject(err);
+        resolve(update);
+      }
+    );
+  });
+};
+
 exports.deleteShop = (id, adminId) => {
-  console.log(id);
-  console.log(adminId);
   return new Promise((resolve, reject) => {
     Shop.deleteOne({ _id: id }, (err) => {
       if (err) reject(err);

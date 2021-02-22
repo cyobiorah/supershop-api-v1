@@ -33,7 +33,6 @@ const shopSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      sparse: true,
     },
   ],
   shopsuperadmin: {
