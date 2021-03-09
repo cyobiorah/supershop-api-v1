@@ -30,7 +30,11 @@ exports.list = (req, res) => {
     }
   }
   ShopModel.list(limit, page).then((result) => {
-    res.status(200).send(result);
+    res.status(200).send({
+      success: true,
+      data: result,
+      message: 'Shops fetched successfully'
+    });
   });
 };
 

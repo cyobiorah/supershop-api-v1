@@ -63,7 +63,7 @@ exports.list = (req, res) => {
     }
   }
   UserModel.list(limit, page).then((result) => {
-    res.status(200).send(result);
+    res.status(200).send({ success: true, data: result, message: 'Users fetched successful' });
   });
 };
 

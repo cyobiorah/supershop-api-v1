@@ -29,7 +29,7 @@ exports.createUser = (userData) => {
 exports.list = (perPage, page) => {
   return new Promise((resolve, reject) => {
     User.find()
-      .populate("shops", "-__v")
+      // .populate("shops", "-__v")
       .limit(perPage)
       .skip(perPage * page)
       .exec(function (err, users) {
