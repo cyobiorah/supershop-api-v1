@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 let count = 0;
 
-const uri =
-  "mongodb+srv://cyriltechlist:cx0iCqSDbT0qmFxY@cluster0.98vqo.mongodb.net/supershop?retryWrites=true&w=majority";
-
 const options = {
   autoIndex: false,
   poolSize: 10,
@@ -16,7 +13,7 @@ const options = {
 const connectWithRetry = () => {
   console.log("MongoDB connection with retry");
   mongoose
-    .connect(uri, options)
+    .connect(process.env.MONGODB_URI, options)
     // .connect(process.env.MONGODB_URI, options)
     .then(() => {
       console.log("MongoDB is connected");
