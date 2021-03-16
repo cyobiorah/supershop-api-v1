@@ -5,14 +5,14 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-corsOptions = {
-  origin: "http://localhost:3200",
-  optionsSuccessStatus: 200,
-};
+// corsOptions = {
+//   origin: "http://localhost:3200",
+//   optionsSuccessStatus: 200,
+// };
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
 
 const UsersRouter = require("./users/routes.config");
 const ShopsRouter = require("./shops/routes.config");
