@@ -44,4 +44,9 @@ exports.routesConfig = function (app) {
     PermissionMiddleware.minimumPermissionLevelRequired(SUPERADMIN_USER),
     ShopsController.deleteShopAdmin,
   ]);
+  app.get("/shops/admin/:adminId", [
+    ValidationMiddleware.validJWTNeeded,
+    PermissionMiddleware.onlySameUserOrAdmin,
+    ShopsController.getShopsByAdminId,
+  ]);
 };

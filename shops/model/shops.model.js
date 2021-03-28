@@ -96,6 +96,15 @@ exports.getShopAdmins = (shopId) => {
   });
 };
 
+exports.getSAdminShops = (adminId) => {
+  return new Promise((resolve, reject) => {
+    Shop.find({ shopsuperadmin: adminId }).exec(function (err, shops) {
+      if (err) reject(err);
+      resolve(shops);
+    });
+  });
+};
+
 exports.deleteShopAdmin = (shopId, shopadminId) => {
   return new Promise((resolve, reject) => {
     Shop.findByIdAndUpdate(

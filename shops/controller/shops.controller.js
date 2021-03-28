@@ -33,7 +33,7 @@ exports.list = (req, res) => {
     res.status(200).send({
       success: true,
       data: result,
-      message: 'Shops fetched successfully'
+      message: "Shops fetched successfully",
     });
   });
 };
@@ -42,6 +42,20 @@ exports.getById = (req, res) => {
   ShopModel.findById(req.params.shopId).then((result) => {
     if (result === null)
       res.status(400).send({ success: false, message: "No Shop Found!" });
+    else res.status(200).send(result);
+  });
+};
+
+exports.getShopsByAdminId = (req, res) => {
+  ShopModel.getSAdminShops(req.params.adminId).then((result) => {
+    if (result === null)
+      res
+        .status(400)
+        .send({
+          success: true,
+          data: result,
+          message: "Admin shops fetched successfully",
+        });
     else res.status(200).send(result);
   });
 };
